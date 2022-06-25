@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/walink-maker-es/static/css/main.264e2f2f.css",
-    "main.js": "/walink-maker-es/static/js/main.b4f8b06a.js",
+    "main.css": "/walink-maker-es/static/css/main.9612a713.css",
+    "main.js": "/walink-maker-es/static/js/main.fe75eb17.js",
     "static/js/787.0d713e98.chunk.js": "/walink-maker-es/static/js/787.0d713e98.chunk.js",
     "index.html": "/walink-maker-es/index.html",
-    "main.264e2f2f.css.map": "/walink-maker-es/static/css/main.264e2f2f.css.map",
-    "main.b4f8b06a.js.map": "/walink-maker-es/static/js/main.b4f8b06a.js.map",
+    "main.9612a713.css.map": "/walink-maker-es/static/css/main.9612a713.css.map",
+    "main.fe75eb17.js.map": "/walink-maker-es/static/js/main.fe75eb17.js.map",
     "787.0d713e98.chunk.js.map": "/walink-maker-es/static/js/787.0d713e98.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.264e2f2f.css",
-    "static/js/main.b4f8b06a.js"
+    "static/css/main.9612a713.css",
+    "static/js/main.fe75eb17.js"
   ]
 }
