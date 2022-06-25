@@ -18,7 +18,8 @@ function App() {
       try {
         let text = textValue;
         const phoneN = parsePhoneNumber(text ?? "", "DO");
-        setNumber(phoneN.countryCallingCode + phoneN.nationalNumber);
+        if (phoneN.isValid())
+          setNumber(phoneN.countryCallingCode + phoneN.nationalNumber);
       } catch (error) {
         if (error instanceof ParseError) alert(error.message);
         setNumber("");
@@ -30,25 +31,29 @@ function App() {
   return (
     <div className="App">
       <h1>
-        Crear un link <span className="green">wa.me</span>!
+        Crear un link de  <strong className="green">WhatsApp</strong>!
       </h1>
       <TextField
         value={textValue}
         onChange={handleChange}
         margin="normal"
-        label="Escribe tu número"
+        label="Escribe un número de telefono"
         fullWidth
+        autoFocus
+        type={'tel'}
       />
       <Button onClick={handleClick} variant="contained">
-        Crear
+        Generar link
       </Button>
       <br />
-      <br />
       {number && (
-        <Link target="_blank" href={`${WALINK_TEMPLATE}${number}`}>
-          {WALINK_TEMPLATE}
-          {number}
-        </Link>
+        <>
+          <p>Haz click en este link para abrir el chat en WhatsApp</p>
+          <Link target="_blank" href={`${WALINK_TEMPLATE}${number}`}>
+            {WALINK_TEMPLATE}
+            {number}
+          </Link>
+        </>
       )}
     </div>
   );
