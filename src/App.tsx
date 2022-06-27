@@ -1,32 +1,45 @@
-import { Button, Link, TextField } from "@mui/material";
-import { ParseError, parsePhoneNumber } from "libphonenumber-js";
-import { ChangeEvent, MouseEvent, useCallback, useState } from "react";
+import { Link, TextField } from "@mui/material";
+import { parsePhoneNumber } from "libphonenumber-js";
+import { KeyboardEventHandler, useCallback, useRef, useState } from "react";
+import QRCode from "react-qr-code";
 import './App.css';
 
 const WALINK_TEMPLATE = "https://wa.me/";
 
 function App() {
-  const [textValue, setTextValue] = useState<string>("");
-  const [number, setNumber] = useState<string>("");
+  const phoneInput = useRef<HTMLInputElement>()
+  const [walink, setWalink] = useState("")
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setTextValue(event.target.value);
-  };
+  const generateWaLink = useCallback(function makeLink() {
+    let text = phoneInput.current?.value ?? "";
+    let number = ""
 
-  const handleClick = useCallback(
-    (event: MouseEvent<HTMLButtonElement>) => {
-      try {
-        let text = textValue;
-        const phoneN = parsePhoneNumber(text ?? "", "DO");
-        if (phoneN.isValid())
-          setNumber(phoneN.countryCallingCode + phoneN.nationalNumber);
-      } catch (error) {
-        if (error instanceof ParseError) alert(error.message);
-        setNumber("");
+    setWalink("")
+
+    try {
+      const phoneNumber = parsePhoneNumber(text, "DO");
+      if (phoneNumber.isValid()) {
+        console.log('Phone number set', phoneNumber)
+        number = phoneNumber.countryCallingCode + phoneNumber.nationalNumber;
+        setWalink(WALINK_TEMPLATE + number)
       }
-    },
-    [textValue]
-  );
+
+    } catch (error) {
+      console.log(error)
+    }
+
+  }, [])
+
+
+  const handleKeyPress: KeyboardEventHandler = (event) => {
+    if (event.key === "Enter") generateWaLink()
+  }
+  // const handleClick = useCallback(
+  //   () => {
+  //     generateWaLink()
+  //   },
+  //   [generateWaLink]
+  // );
 
   return (
     <div className="App">
@@ -34,27 +47,33 @@ function App() {
         Crear un link de  <strong className="green">WhatsApp</strong>!
       </h1>
       <TextField
-        value={textValue}
-        onChange={handleChange}
+        inputRef={phoneInput}
+        onChange={generateWaLink}
+        defaultValue=""
         margin="normal"
         label="Escribe un número de telefono"
         fullWidth
         autoFocus
         type={'tel'}
+        onKeyUp={handleKeyPress}
       />
-      <Button onClick={handleClick} variant="contained">
+      {/* <Button onClick={handleClick} variant="contained">
         Generar link
-      </Button>
+      </Button> */}
       <br />
-      {number && (
+      {walink && (
         <>
           <p>Haz click en este link para abrir el chat en WhatsApp</p>
-          <Link target="_blank" href={`${WALINK_TEMPLATE}${number}`}>
-            {WALINK_TEMPLATE}
-            {number}
+          <Link target="_blank" href={walink}>
+            {walink}
           </Link>
         </>
       )}
+
+      {walink && (
+        <QRCode value={walink} alt="QR code" style={{ margin: '2rem auto' }} />
+      )}
+
     </div>
   );
 }
