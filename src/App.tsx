@@ -1,4 +1,4 @@
-import { Link, TextField } from "@mui/material";
+import { Button, Link, TextField } from "@mui/material";
 import { parsePhoneNumber } from "libphonenumber-js";
 import { KeyboardEventHandler, useCallback, useRef, useState } from "react";
 import QRCode from "react-qr-code";
@@ -34,39 +34,29 @@ function App() {
   const handleKeyPress: KeyboardEventHandler = (event) => {
     if (event.key === "Enter") generateWaLink()
   }
-  // const handleClick = useCallback(
-  //   () => {
-  //     generateWaLink()
-  //   },
-  //   [generateWaLink]
-  // );
 
   return (
     <div className="App">
       <h1>
-        Crear un link de  <strong className="green">WhatsApp</strong>!
+        Agrega un n&uacute;mero a tu <strong className="green">WhatsApp</strong> sin crear el contacto.
       </h1>
       <TextField
         inputRef={phoneInput}
         onChange={generateWaLink}
         defaultValue=""
         margin="normal"
-        label="Escribe un número de telefono"
+        label="Ingresa el número de telefono"
         fullWidth
         autoFocus
         type={'tel'}
         onKeyUp={handleKeyPress}
       />
-      {/* <Button onClick={handleClick} variant="contained">
-        Generar link
-      </Button> */}
       <br />
       {walink && (
         <>
-          <p>Haz click en este link para abrir el chat en WhatsApp</p>
-          <Link target="_blank" href={walink}>
-            {walink}
-          </Link>
+          <Button color="success" href={walink} target="_blank" variant="contained">
+            Continuar al chat
+          </Button>
         </>
       )}
 
