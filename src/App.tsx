@@ -37,6 +37,7 @@ function App() {
 
   return (
     <div className="App">
+      <main>
       <h1>
         Agrega un n&uacute;mero a tu <strong className="green">WhatsApp</strong> sin crear el contacto.
       </h1>
@@ -63,6 +64,11 @@ function App() {
       {walink && (
         <QRCode value={walink} alt="QR code" style={{ margin: '2rem auto' }} />
       )}
+      </main>
+      
+      <footer>
+        &copy; 2022, walink.pro
+      </footer>
 
     </div>
   );
