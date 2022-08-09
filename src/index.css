@@ -1,6 +1,10 @@
-html, body, #root {
-  min-height: 100vh;
+* {
+  box-sizing:border-box;
+  margin: 0;
+  padding: 0;
 }
+
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -8,24 +12,109 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  background: linear-gradient(180deg, #FFFFFF 0%, #FAC9C9 51.56%, #3F0055 100%);
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-
-.App {
-  display: flex;
-  flex-direction: column;
-  
-  justify-content: space-between;
-}
 
 main {
   display: flex;
   flex-direction: column;
-  
+  justify-content: space-between;
+
+  padding-inline: 2rem;
+  padding-block: 4rem;
+
+  font-family: sans-serif;
+  text-align: center;
+
+  margin-inline: auto;
+
+  max-width: 400px;
+  min-height: 100vh;
+}
+
+
+input, textarea {
+  outline: none;
+  border: none;
+  margin-block: 0.5rem;
+}
+
+input {
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 26px;
+  display: block;
+  min-height: 49px;
+  padding-inline: 20px;
+  width: 100%;
+}
+
+textarea {
+  width: 100%;
+  height: 85px;
+
+  background: #FFFFFF;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 10px;
+
+  padding: 20px;
+
+  resize: none;
+}
+
+button {
+  border: 1px solid #FFFFFF;
+  border-radius: 21px;
+  padding: 10px 15px;
+  background: transparent;
+  color: white;
+  outline: none;
+
+}
+button:hover, button:focus {
+  cursor: pointer;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+
+button.primary {
+  --color: #54A041;
+  background-color: var(--color) ;
+  border-color: var(--color);
+}
+
+
+
+*.stack {
+  --g: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--g);
+}
+
+.stack.wrapping {
+  flex-wrap: wrap;
+}
+
+.stack.horizontal {
+  flex-direction: row;
+}
+
+.stack.centered {
+  justify-content: center;
+}
+
+.stack.spaced-centered {
+  justify-content: space-around;
+}
+
+.stack.dispersed {
+  justify-content: space-between;
+}
+
+h1 {
+  color: black;
+  /* text-shadow: 0 2px 5px black; */
 }

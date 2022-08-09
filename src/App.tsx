@@ -1,76 +1,102 @@
-import { Button, TextField } from "@mui/material";
 import { parsePhoneNumber } from "libphonenumber-js";
-import { KeyboardEventHandler, useCallback, useRef, useState } from "react";
+import { FocusEventHandler, KeyboardEventHandler, MouseEventHandler, useCallback, useEffect, useRef, useState } from "react";
 import QRCode from "react-qr-code";
-import './App.css';
 
 const WALINK_TEMPLATE = "https://wa.me/";
 
 function App() {
-  const phoneInput = useRef<HTMLInputElement>()
+  const phoneInput = useRef<HTMLInputElement>(null)
+  const messageInput = useRef<HTMLTextAreaElement>(null)
   const [walink, setWalink] = useState("")
+  const [showQR, setShowQR] = useState(false)
 
-  const generateWaLink = useCallback(function makeLink() {
-    let text = phoneInput.current?.value ?? "";
-    let number = ""
+  const getWalink = useCallback(function makeLink() {
+    let phoneString = phoneInput.current?.value ?? "";
 
-    setWalink("")
+    const phoneNumber = parsePhoneNumber(phoneString, "DO");
 
-    try {
-      const phoneNumber = parsePhoneNumber(text, "DO");
-      if (phoneNumber.isValid()) {
-        console.log('Phone number set', phoneNumber)
-        number = phoneNumber.countryCallingCode + phoneNumber.nationalNumber;
-        setWalink(WALINK_TEMPLATE + number)
-      }
-
-    } catch (error) {
-      console.log(error)
+    if (phoneNumber.isValid()) {
+      const number = phoneNumber.countryCallingCode + phoneNumber.nationalNumber;
+      const text = messageInput.current?.value
+      const textParam = `?text=${text}`
+      return `${WALINK_TEMPLATE}${number}${text ? textParam : ''}`
     }
+    
+    return ""
+  }, [ ])
 
-  }, [])
 
-
-  const handleKeyPress: KeyboardEventHandler = (event) => {
-    if (event.key === "Enter") generateWaLink()
+  const copyLink = () => {
+    navigator.clipboard.writeText(getWalink())
+    alert('Link copiado')
   }
 
+
+  const openChat = () => {
+    window.open(getWalink(), '_blank');
+  }
+
+  const handleShowQrClick:MouseEventHandler = (event) => {
+    setWalink(getWalink())
+    setShowQR(() => true)
+  }
+
+  const handlePhoneInputKeyUp: KeyboardEventHandler = (event) => {
+    if (event.key === "Enter") openChat()
+  }
+
+  const handlePhoneInputFocus:FocusEventHandler<HTMLInputElement> = (event) => {
+    event.target.select()
+    event.target.setSelectionRange(0, 99999)
+  }
+
+  useEffect(()=> {
+    phoneInput.current?.focus()
+  }, [])
+
   return (
-    <div className="App">
-      <main>
-      <h1>
-        Agrega un n&uacute;mero a tu <strong className="green">WhatsApp</strong> sin crear el contacto.
-      </h1>
-      <TextField
-        inputRef={phoneInput}
-        onChange={generateWaLink}
-        defaultValue=""
-        margin="normal"
-        label="Ingresa el número de telefono"
-        fullWidth
-        autoFocus
+    <main>
+
+      <div>
+        {showQR && walink ? (
+          <QRCode 
+            value={walink} alt="QR code" 
+            style={{ height: 300, }} />
+        ): (
+          <h1>
+            Agrega un n&uacute;mero a tu <strong>WhatsApp</strong> sin crear el contacto.
+          </h1>
+        )}
+      </div>
+
+      <div className="stack">
+
+      <input 
+        ref={phoneInput}
         type={'tel'}
-        onKeyUp={handleKeyPress}
+        defaultValue={``}
+        placeholder={`# de teléfono`}
+        className={`input`}
+        onKeyUp={handlePhoneInputKeyUp}
+        onFocus={handlePhoneInputFocus}
+        onChange={() => setWalink(getWalink())}
       />
-      <br />
-      {walink && (
-        <>
-          <Button color="success" href={walink} target="_blank" variant="contained">
-            Continuar al chat
-          </Button>
-        </>
-      )}
 
-      {walink && (
-        <QRCode value={walink} alt="QR code" style={{ margin: '2rem auto' }} />
-      )}
-      </main>
-      
-      <footer>
-        &copy; 2022, walink.pro
-      </footer>
+      <textarea
+        ref={messageInput}
+        className="textarea"
+        placeholder="Escribe tu mensaje"
+        onChange={() => setWalink(getWalink())}
+        defaultValue="👋 Hola"
+      ></textarea>
 
-    </div>
+      <div className="dispersed horizontal stack">
+        <button onClick={handleShowQrClick}>🤳 Ver QR</button>
+        <button onClick={copyLink}>📋 Copiar link</button>
+        <button onClick={openChat} className="primary">💬 Abrir chat</button>
+      </div>
+      </div>
+    </main>
   );
 }
 
