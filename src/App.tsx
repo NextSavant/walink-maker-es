@@ -88,7 +88,7 @@ function App() {
         onKeyUp={()=> setWalink("")}
       ></textarea>
 
-      <div className="dispersed horizontal stack">
+      <div className="dispersed horizontal wrapping stack">
         <button onClick={handleShowQrClick}>🤳 Ver QR</button>
         <button onClick={copyLink}>📋 Copiar link</button>
         <button onClick={openChat} className="primary">💬 Abrir chat</button>
