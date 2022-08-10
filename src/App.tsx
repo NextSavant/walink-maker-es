@@ -84,7 +84,7 @@ function App() {
         ref={messageInput}
         className="textarea"
         placeholder="Escribe tu mensaje"
-        defaultValue="👋 Hola"
+        defaultValue=""
         onKeyUp={()=> setWalink("")}
       ></textarea>
 
