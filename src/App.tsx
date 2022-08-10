@@ -18,8 +18,8 @@ function App() {
     if (phoneNumber.isValid()) {
       const number = phoneNumber.countryCallingCode + phoneNumber.nationalNumber;
       const text = messageInput.current?.value
-      const textParam = `?text=${text}`
-      return `${WALINK_TEMPLATE}${number}${text ? textParam : ''}`
+      const textParam = `?text=${ encodeURIComponent(text ?? "") }`
+      return `${WALINK_TEMPLATE}${number}${ text ? textParam : ''}`
     }
     
     return ""
