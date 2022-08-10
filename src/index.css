@@ -1,5 +1,5 @@
 * {
-  box-sizing:border-box;
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
@@ -11,7 +11,8 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  background: linear-gradient(180deg, #FFFFFF 0%, #FAC9C9 51.56%, #3F0055 100%);
+  background: linear-gradient(180deg, #FFF 0%, #E1ECE8 51.56%, #212b26 100%);
+  /* background: linear-gradient(180deg, #FFFFFF 0%, #FAC9C9 51.56%, #3F0055 100%); */
 }
 
 
@@ -32,7 +33,8 @@ main {
 }
 
 
-input, textarea {
+input,
+textarea {
   outline: none;
   border: none;
   margin-block: 0.5rem;
@@ -70,7 +72,9 @@ button {
   outline: none;
 
 }
-button:hover, button:focus {
+
+button:hover,
+button:focus {
   cursor: pointer;
   background: rgba(255, 255, 255, 0.16);
 }
@@ -78,7 +82,7 @@ button:hover, button:focus {
 
 button.primary {
   --color: #54A041;
-  background-color: var(--color) ;
+  background-color: var(--color);
   border-color: var(--color);
 }
 
