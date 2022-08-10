@@ -8,7 +8,6 @@ function App() {
   const phoneInput = useRef<HTMLInputElement>(null)
   const messageInput = useRef<HTMLTextAreaElement>(null)
   const [walink, setWalink] = useState("")
-  const [showQR, setShowQR] = useState(false)
 
   const getWalink = useCallback(function makeLink() {
     let phoneString = phoneInput.current?.value ?? "";
@@ -38,11 +37,11 @@ function App() {
 
   const handleShowQrClick:MouseEventHandler = (event) => {
     setWalink(getWalink())
-    setShowQR(() => true)
   }
 
   const handlePhoneInputKeyUp: KeyboardEventHandler = (event) => {
     if (event.key === "Enter") openChat()
+    setWalink("")
   }
 
   const handlePhoneInputFocus:FocusEventHandler<HTMLInputElement> = (event) => {
@@ -58,7 +57,7 @@ function App() {
     <main>
 
       <div>
-        {showQR && walink ? (
+        {walink ? (
           <QRCode 
             value={walink} alt="QR code" 
             style={{ height: 300, }} />
@@ -79,15 +78,14 @@ function App() {
         className={`input`}
         onKeyUp={handlePhoneInputKeyUp}
         onFocus={handlePhoneInputFocus}
-        onChange={() => setWalink(getWalink())}
       />
 
       <textarea
         ref={messageInput}
         className="textarea"
         placeholder="Escribe tu mensaje"
-        onChange={() => setWalink(getWalink())}
         defaultValue="👋 Hola"
+        onKeyUp={()=> setWalink("")}
       ></textarea>
 
       <div className="dispersed horizontal stack">
